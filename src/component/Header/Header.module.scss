@@ -1,0 +1,91 @@
+.wrapper {
+    width: 100%;
+    height: 65px;
+    padding: 0 40px;
+    background-color: var(--header-color);
+    display: flex;
+    align-items: center;
+    .logo-nav {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        .img-logo {
+            width: 10.48rem;
+            height: 3rem;
+            line-height: 65px;
+            margin-right: 2rem;
+        }
+
+        .navigation {
+            ul {
+                display: flex;
+                align-items: center;
+                li{
+                    position: relative;
+                }
+                .navigation-link {
+                    font-size: 1.6rem;
+                    position: relative;
+                    color: var(--text-color);
+                    margin-right: 2rem;
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: calc(100% + 2px);
+                        width: 0%;
+                        left: 0;
+                        height: 2px;
+                        background-color: red;
+                        border-radius: 1px;
+                    }
+
+                    &:hover::after {
+                        width: 100%;
+                        transition: all linear 0.25s;
+                    }
+
+                    &:hover {
+                        color: var(--color-hover);
+                        transition: all linear 0.25s;
+                    }
+                }
+            }
+        }
+    }
+    .search-login {
+        display: flex;
+        align-items: center;
+        .wrap-input {
+            position: relative;
+            .input {
+                width: 30rem;
+                height: 3.5rem;
+                border-radius: 3px;
+                padding-left: 1rem;
+            }
+            .search-btn {
+                height: 3.5rem;
+                width: 4rem;
+                position: absolute;
+                top: 0;
+                right: 0;
+                border-radius: 3px;
+                background-color: #e4e4e4;
+                cursor: pointer;
+            }
+        }
+        .language,
+        .register {
+            display: flex;
+            flex-direction: column;
+            font-size: 1.6rem;
+            color: var(--text-color);
+            margin-left: 2.5rem;
+            transition: all linear .2s;
+            &:hover {
+                color: var(--color-hover);
+                cursor: pointer;
+            }
+        }
+    }
+}
