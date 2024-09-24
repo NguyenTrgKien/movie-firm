@@ -1,0 +1,27 @@
+.button{
+    min-width: 18rem;
+    height: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background-color:var(--text-color);
+    gap: 1rem;
+}
+
+.btnHero{
+    width: 18rem;
+    height: 6rem;
+    font-size: 1.8rem;
+    font-weight: 500;
+    background-color: var(--color-hover);
+    color: var(--text-color);
+    user-select: none;
+    &:hover{
+        background-color: rgb(243, 0, 0);
+        cursor: pointer;
+    }
+}

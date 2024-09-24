@@ -1,0 +1,100 @@
+@mixin iconNav($posi,$width, $height,$bgc,$radius){
+    position: $posi;
+    width: $width;
+    height: $height;
+    background-color:$bgc;
+    border-radius: $radius; 
+}
+
+.list-scroll{
+    position: absolute;
+    width: 10%;
+    top: 75%;
+    left: 0;
+    padding: 0 6rem;
+    width: 100%;
+    .wrap-icon-left,
+    .wrap-icon-right{
+        @include iconNav(absolute, 5rem, 5rem, transparent, 50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2rem;
+        color: #ccc;
+        transition: all linear .2s;
+        &:hover{
+            background-color: #97979791;
+            color: #dbdbdb;
+            cursor: pointer;
+        }
+    }
+    .wrap-icon-left{
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .wrap-icon-right{
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .list-scroll-title{
+        font-size: 2rem;
+        font-weight: 500;
+        margin-bottom: 2.5rem;
+        color: var(--text-color);
+    }
+
+    .list-scroll-firm{
+        width: 100%;
+        height: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-area: "item1 item2 item3 item4 item5 item6";
+        gap: 1rem;
+        grid-auto-flow: column;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        .list-scroll-item{
+            position: relative;
+            min-width: 22.3rem;
+            height: 29rem;
+            border-radius: .6rem;
+            transition: all linear .25s;
+            .list-scroll-item-img{
+                width: 100%;
+                height: 29rem;
+                object-fit: cover;
+                border-radius: .6rem;
+            }
+            .info-trendy{
+                position: absolute;
+                top: 0;
+                right: 0;
+                min-width: 4rem;
+                min-height: 3.2rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.5rem;
+                font-weight: 900;
+                padding: 0 .5rem;
+                text-shadow: 0 0 .4rem #4a4a4a;
+                border-bottom-left-radius: 6px;
+                border-top-right-radius: .6rem;
+                color: var(--text-color);
+                background-color: #1bd4ee;
+            }
+        }
+
+    }
+    .list-scroll-firm::-webkit-scrollbar{
+        display: none;
+    }
+
+}
+
+
+

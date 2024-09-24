@@ -1,0 +1,90 @@
+
+.hero-sidebar{
+    position: relative;
+    width: 100%;
+    height: calc(100vh - 6.5rem);
+    padding: 0 6rem;
+    .wrap-icon-left,
+    .wrap-icon-right{
+        position: absolute;
+        top: 50%;
+        width: 6rem;
+        height: 6rem;
+        background-color: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        transform: translateY(-50%);
+        transition: all linear .25s;
+        &:hover{
+            background-color: #717171a7;
+            cursor: pointer;
+        }
+    }
+    
+    .wrap-icon-left{
+        left: 1rem;
+    }
+    
+    .wrap-icon-right{
+        right: 1rem;
+    }
+    .movie-icon-left,
+    .movie-icon-right{
+        font-size: 2.5rem;
+        color: #d7d7d7;
+    }
+    .content-info-movie{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        .movie-title{
+            font-size: 8rem;
+            font-family: 'abhaya';
+            color: var(--text-color);
+        }
+        
+        .info-movie{
+            font-size: 1.5rem;
+            color: #ccc;
+            letter-spacing: .4rem;
+            margin-top: .6rem;
+            // word-spacing: -4px;
+        }
+
+        .movie-btns{
+            display: flex;
+            align-items: center;
+            margin-top: 2.5rem;
+            .movie-btn-heart,
+            .movie-btn-share{
+                width: 4rem;
+                height: 4rem;
+                background-color: #a8a8a887;
+                color: #c3c3c3;
+                margin-left: 2rem;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                &:hover{
+                    background-color: #b7b7b787;
+                }
+            }
+
+            
+        }
+        
+    
+    }
+    .image-hero{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -100;
+    }
+}
