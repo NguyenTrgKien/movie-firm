@@ -13,6 +13,7 @@
     left: 0;
     padding: 0 6rem;
     width: 100%;
+    z-index: 100;
     .wrap-icon-left,
     .wrap-icon-right{
         @include iconNav(absolute, 5rem, 5rem, transparent, 50%);
@@ -43,19 +44,20 @@
     .list-scroll-title{
         font-size: 2rem;
         font-weight: 500;
-        margin-bottom: 2.5rem;
         color: var(--text-color);
     }
 
     .list-scroll-firm{
         width: 100%;
-        height: auto;
+        height: 35rem;
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-rows: 1fr;
         grid-area: "item1 item2 item3 item4 item5 item6";
         gap: 1rem;
         grid-auto-flow: column;
         overflow-x: auto;
+        align-items: center;
         scroll-behavior: smooth;
         .list-scroll-item{
             position: relative;
@@ -63,11 +65,13 @@
             height: 29rem;
             border-radius: .6rem;
             transition: all linear .25s;
+            overflow: hidden;
             .list-scroll-item-img{
                 width: 100%;
-                height: 29rem;
+                height: 100%;
                 object-fit: cover;
                 border-radius: .6rem;
+                transition: all linear .1s;
             }
             .info-trendy{
                 position: absolute;
@@ -86,6 +90,88 @@
                 border-top-right-radius: .6rem;
                 color: var(--text-color);
                 background-color: #1bd4ee;
+            }
+            &:hover{
+                transform: scale(1.2);
+                z-index: 100;
+            }
+
+            &:hover .list-scroll-item-img{
+                position: absolute;
+                width: 100%;
+                height: 40%;
+                object-fit: cover;
+                border-bottom-right-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+
+            &:hover .list-info-movie{
+                display: block;
+            }
+
+            .list-info-movie{
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 60%;
+                padding: 1rem;
+                background-color: #383838;
+                display: none;
+                transition: all linear .2s;
+                .name-movie{
+                    font-size: 1.6rem;
+                    font-weight: 500;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 1;
+                    line-clamp: 1;
+                    text-overflow: ellipsis;
+                    color: var(--text-color);
+                    overflow: hidden;
+                }
+                .evaluate{
+                    display: flex;
+                    align-items: center;
+                    font-size: 1rem;
+                    padding-top: .8rem;
+                    color: var(--text-color);
+                    gap: 2px;
+                    .evaluate-start{
+                        font-size: .8rem;
+                        color: rgb(20, 246, 20);
+                    }
+                }
+                .list-category{
+                    display: flex;
+                    justify-content: space-between;
+                    padding-top:.6rem;
+                    .list-cate-item{
+                        font-size: 1rem;
+                        color: var(--text-color);
+                        background-color: #616161;
+                    }
+                }
+                .overview{
+                    font-size: 1rem;
+                    color: var(--text-color);
+                    padding-top: .5rem;
+                    word-spacing: .1rem;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 6;
+                    line-clamp: 6;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+
+                .btns-movie{
+                    position: absolute;
+                    bottom: .5rem;
+                    right: 1rem;
+                    gap: 1rem;
+                    display: flex;
+                    align-items: center;
+                }
             }
         }
 

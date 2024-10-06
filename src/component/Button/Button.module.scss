@@ -1,5 +1,5 @@
 .button{
-    min-width: 18rem;
+    min-width: 4rem;
     height: 6rem;
     display: flex;
     justify-content: center;
@@ -24,4 +24,52 @@
         background-color: rgb(243, 0, 0);
         cursor: pointer;
     }
+}
+
+.btnSmall{
+    width: 6rem;
+    height: 2.5rem;
+    font-size: 1.4rem;
+    background-color: rgba(255, 0, 0, 0.668);  
+    color: var(--text-color);
+    gap: .5rem;
+    transition: all linear .2s;
+    &:hover{
+        background-color: rgba(255, 0, 0, 0.915);
+        box-shadow: 0 0 5px #1f1f1f;
+        cursor: pointer;
+    }
+}
+
+.detailInfo{
+    font-size: 1.4rem;
+    color: var(--text-color);
+    &:hover{
+        text-decoration: underline;
+
+    }
+}
+
+.btnMedium{
+    // min-width: 10rem;
+    padding:1.3rem 2rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    background-color: rgb(99, 99, 99);
+    display: flex;
+    text-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: .6rem;
+    border-radius: .5rem;
+    color:#fff;
+    opacity: 1;
+    &:hover{
+        cursor: pointer;
+        opacity: .8;
+    }
+}
+
+.active{
+    background-color:  rgb(24, 226, 24);
 }

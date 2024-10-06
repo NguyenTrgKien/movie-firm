@@ -8,7 +8,7 @@ const publicRouter =[
         component: Home
     },
     {
-        to: '/detailmovie',
+        to: '/detailmovie/:id',
         component: Detailmovie
     },
     {

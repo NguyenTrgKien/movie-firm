@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from '../../assets/logo/logo.png';
 import { Link } from 'react-router-dom';
-import { faCaretDown, faGlobe, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faCaretDown, faChevronDown, faGlobe, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import style from './Header.module.scss';
 import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
 // import Tippy from '@tippyjs/react/headless';
 import Menu from '../../component/Menu';
 
@@ -29,19 +30,35 @@ const menuItem = [
 const menuLanguage = [
     {
         name: 'Tiếng Việt',
-
     },
     {
-        name: 'English'
+        name: 'English',
     },
     {
-        name: 'Japan'
-    }
-]
+        name: 'Japan',
+    },
+];
 
 function Header() {
+    const [colorHeader, setColorHeader] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY >= 200) {
+                setColorHeader(true);
+            }else{
+                setColorHeader(false);
+            }            
+        };
+        window.addEventListener('scroll', handleScroll);
+    }, []);
+
     return (
-        <header className={clsx(style['wrapper'])}>
+        <header
+            className={clsx(style['wrapper'], {
+                [style.bgcolor]: colorHeader,
+            })}
+        >
             <div className={clsx(style['logo-nav'])}>
                 <img className={clsx(style['img-logo'])} src={logo} alt="logo" />
                 <nav className={clsx(style['navigation'])}>
@@ -53,19 +70,24 @@ function Header() {
                         </li>
                         <li>
                             <Link to="/detailmovie" className={clsx(style['navigation-link'])}>
+                                Phim mới nhất
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/" className={clsx(style['navigation-link'])}>
                                 Phim bộ
                             </Link>
                         </li>
                         <li>
                             <Link to="/" className={clsx(style['navigation-link'])}>
-                                Ngôn tình
+                                Phim lẻ
                             </Link>
                         </li>
                         <li>
                             <Menu typeMenu content={menuItem}>
                                 <Link to="/" className={clsx(style['navigation-link'])}>
-                                    Xem thêm
-                                    <FontAwesomeIcon icon={faCaretDown} />
+                                    Thể loại
+                                    <FontAwesomeIcon icon={faChevronDown} className={clsx(style['navigation-link-icon'])}/>
                                 </Link>
                             </Menu>
                         </li>

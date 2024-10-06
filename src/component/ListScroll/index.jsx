@@ -1,32 +1,38 @@
 import style from './ListScroll.module.scss';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { useState, useEffect } from 'react';
+import { faChevronLeft, faChevronRight, faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
+import Button from '../Button';
+import {Link} from 'react-router-dom';
+import { useRef } from 'react';
 
-function ListScroll({ listScrollContent = [], title }) {
-    const [data, setData] = useState([]);
 
-    const fetchApi = async () => {
-        const response = await fetch(
-            `http://www.omdbapi.com/?s=${encodeURIComponent('Avengers')}&apikey=${'2e5d859a'}`
-        );
-        const newItem = await response.json();
-        if (newItem) {
-            console.log(newItem);
-        } else {
-            console.log('lỗi');
+function ListScroll({ dataApi = [], title = '' }) {
+    const listScrollRef = useRef();
+    
+    const handleMoveMovieLeft = () => {
+        if(listScrollRef.current){
+            listScrollRef.current.scrollBy({
+                left: -listScrollRef.current.clientWidth,
+                behavior: 'smooth'
+            })
         }
-        setData((prev) => [...prev, ...newItem.Search]);
-    };
+    }
 
-    useEffect(() => {
-        fetchApi();
-    }, []);
+    const handleMoveMovieright = () => {
+        if(listScrollRef.current){
+            listScrollRef.current.scrollBy({
+                left: listScrollRef.current.clientWidth,
+                behavior: 'smooth'
+            })
+        }
+    }
 
     return (
         <div className={clsx(style['list-scroll'])}>
-            <div className={clsx(style['wrap-icon-left'])}>
+            <div className={clsx(style['wrap-icon-left'])} 
+                onClick={() => handleMoveMovieLeft()}
+            >
                 <FontAwesomeIcon
                     icon={faChevronLeft}
                     className={clsx(style['list-scroll-icon-left'])}
@@ -34,38 +40,79 @@ function ListScroll({ listScrollContent = [], title }) {
             </div>
             <h2 className={clsx(style['list-scroll-title'])}>{title && title}</h2>
 
-            <div className={clsx(style['list-scroll-firm'])}>
-                {listScrollContent.map((item, index) => {
+            <div className={clsx(style['list-scroll-firm'])}
+                ref={listScrollRef}
+            >
+                {dataApi.map((value, index) => {
+                    const poster = value.poster_path;
+
                     return (
-                        <div key={index} className={clsx(style['list-scroll-item'])}>
+                        <Link target='_blank' to={`/detailmovie/${value.id}`} key={index} className={clsx(style['list-scroll-item'])}>
                             <img
-                                src={item.image}
+                                src={`https://image.tmdb.org/t/p/w500${poster}`}
                                 alt="ảnh phim"
                                 className={clsx(style['list-scroll-item-img'])}
                             />
-                            <div className={clsx(style['info-trendy'])}>{item.trendy}</div>
-                        </div>
+                            <div className={clsx(style['info-trendy'])}>Top 10</div>
+                            <div className={clsx(style['list-info-movie'])}>
+                                <h4 className={clsx(style['name-movie'])}>{value.title}</h4>
+                                <div className={clsx(style['evaluate'])}>
+                                    <FontAwesomeIcon
+                                        icon={faStar}
+                                        className={clsx(style['evaluate-start'])}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faStar}
+                                        className={clsx(style['evaluate-start'])}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faStar}
+                                        className={clsx(style['evaluate-start'])}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faStar}
+                                        className={clsx(style['evaluate-start'])}
+                                    />
+                                    <FontAwesomeIcon
+                                        icon={faStar}
+                                        className={clsx(style['evaluate-start'])}
+                                    />
+                                    | {value.release_date}
+                                </div>
+                                <div className={clsx(style['list-category'])}>
+                                    <span className={clsx(style['list-cate-item'])}>ThaiLand</span>
+                                    <span className={clsx(style['list-cate-item'])}>Romance</span>
+                                    <span className={clsx(style['list-cate-item'])}>Thai</span>
+                                    <span className={clsx(style['list-cate-item'])}>
+                                        FriendShip
+                                    </span>
+                                    <span className={clsx(style['list-cate-item'])}>China</span>
+                                </div>
+                                <p className={clsx(style['overview'])}>{value.overview}</p>
+                                <div className={clsx(style['btns-movie'])}>
+                                    <div className={clsx(style['btn-play'])}>
+                                        <Button btnSmall to='/'>
+                                            <FontAwesomeIcon icon={faPlay} />
+                                            Xem
+                                        </Button>
+                                    </div>
+                                    <Button detailInfo to={`/detailmovie/${value.id}`} >
+                                        Chi tiết
+                                    </Button>
+                                </div>
+                            </div>
+                        </Link>
                     );
                 })}
             </div>
-            <div className={clsx(style['wrap-icon-right'])}>
+            <div className={clsx(style['wrap-icon-right'])}
+                onClick={() => handleMoveMovieright()}
+            >
                 <FontAwesomeIcon
                     icon={faChevronRight}
                     className={clsx(style['list-scroll-icon-right'])}
                 />
             </div>
-            {data.map((value, index) => {
-                console.log(value)
-                return (
-                    <div key={index}>
-                        <img  src={value.Poster} alt="img" />
-                        <video width='200' height='200' controls>
-                            <source src={``} type='video/mp4'/>
-                            <source src={`https://www.example.com/videos/${value.imdbID}.mp4`} type="video/mp4" />
-                        </video>
-                    </div>
-                );
-            })}
         </div>
     );
 }
