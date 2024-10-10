@@ -5,7 +5,7 @@ import MainContent from "../../component/MainContent";
 function Home() {
     return (  
         <div className={clsx('wrapper')}>
-            <Header/>
+            <Header scrollHeader={true}/>
             <MainContent/>
             <footer className={clsx('footer')}>
 

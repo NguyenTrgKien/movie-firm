@@ -4,7 +4,9 @@ import HeroSidebar from './HeroSidebar';
 import MovieGrid from './MovieGrid';
 import NavListMovie from './NavListMovie';
 
+
 function MainContent() {
+    
     return (  
         <div className={clsx(style['main-content'])}>
             <HeroSidebar/>

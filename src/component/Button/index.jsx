@@ -29,7 +29,7 @@ function Button({children, btnHero=false, btnSmall=false, btnMedium=false, activ
         Comp = Link;
     }
     return (  
-        <Comp className={classes} to={to}>
+        <Comp className={classes} to={to} target='_blank'>
             {children}
         </Comp>
     );

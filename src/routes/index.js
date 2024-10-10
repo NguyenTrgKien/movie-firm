@@ -1,6 +1,7 @@
 import Home from '../page/Home';
 import Detailmovie from '../page/Detailmovie';
-import FormRegister from '../page/FormRegister';
+import WatchMovie from '../page/WatchMovie';
+import GenreMovie from '../page/GenreMovie';
 
 const publicRouter =[
     {
@@ -12,8 +13,12 @@ const publicRouter =[
         component: Detailmovie
     },
     {
-        to: '/formregister',
-        component: FormRegister
+        to: '/watchmovie/:id',
+        component: WatchMovie
+    },
+    {
+        to: '/genremovie/:genre',
+        component: GenreMovie
     }
 ]
 

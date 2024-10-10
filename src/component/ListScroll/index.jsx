@@ -91,7 +91,7 @@ function ListScroll({ dataApi = [], title = '' }) {
                                 <p className={clsx(style['overview'])}>{value.overview}</p>
                                 <div className={clsx(style['btns-movie'])}>
                                     <div className={clsx(style['btn-play'])}>
-                                        <Button btnSmall to='/'>
+                                        <Button btnSmall to={`/watchmovie/${value.id}`}>
                                             <FontAwesomeIcon icon={faPlay} />
                                             Xem
                                         </Button>

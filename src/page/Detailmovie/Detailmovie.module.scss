@@ -86,6 +86,10 @@
                 }
                 .cast-movie-item {
                     color: var(--text-color);
+                    transition: all linear .2s;
+                    &:hover{
+                        color: rgb(48, 255, 83);
+                    }
                 }
                 .decription {
                     margin: 1.4rem 0 2.5rem 0;
@@ -119,34 +123,34 @@
                 background-image: radial-gradient(circle, #ffffff00, var(--default-background) 85%);
                 z-index: 10;
             }
-            .video-movie-item {
-                position: relative;
-                z-index: 1;
-                height: 100%;
-            }
-            .volume-video{
-                position: absolute;
-                bottom: 3rem;
-                right: 5rem;
-                z-index: 50;
-                .wrap-icon-volume{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 4rem;
-                    height: 4rem;
-                    background-color: rgba(126, 126, 126, 0.249);
-                    border-radius: 50%;
-                    cursor: pointer;
-                    .volume-video-icon{
-                        font-size: 1.6rem;
-                        color: #b8b8b8;
-                    }
-                    &:hover{
-                        background-color: rgba(126, 126, 126, 0.342);
-                    }
-                }
-            }
+            // .video-movie-item {
+            //     position: relative;
+            //     z-index: 1;
+            //     height: 100%;
+            // }
+            // .volume-video{
+            //     position: absolute;
+            //     bottom: 3rem;
+            //     right: 5rem;
+            //     z-index: 50;
+            //     .wrap-icon-volume{
+            //         display: flex;
+            //         justify-content: center;
+            //         align-items: center;
+            //         width: 4rem;
+            //         height: 4rem;
+            //         background-color: rgba(126, 126, 126, 0.249);
+            //         border-radius: 50%;
+            //         cursor: pointer;
+            //         .volume-video-icon{
+            //             font-size: 1.6rem;
+            //             color: #b8b8b8;
+            //         }
+            //         &:hover{
+            //             background-color: rgba(126, 126, 126, 0.342);
+            //         }
+            //     }
+            // }
         }
     }
     .section-info-episode{

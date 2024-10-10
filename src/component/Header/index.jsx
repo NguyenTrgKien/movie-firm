@@ -1,11 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import logo from '../../assets/logo/logo.png';
 import { Link } from 'react-router-dom';
-import { faCaretDown, faChevronDown, faGlobe, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faGlobe, faSearch, faUser } from '@fortawesome/free-solid-svg-icons';
 import style from './Header.module.scss';
 import clsx from 'clsx';
-import { useEffect, useRef, useState } from 'react';
-// import Tippy from '@tippyjs/react/headless';
+import { useEffect, useState } from 'react';
 import Menu from '../../component/Menu';
 
 const menuItem = [
@@ -39,18 +38,36 @@ const menuLanguage = [
     },
 ];
 
-function Header() {
+const apiKey = '122d1263283f2d9f0ac96a53bbf7e793';
+function Header({scrollHeader}) {
     const [colorHeader, setColorHeader] = useState(false);
+    const [listGenre, setListGenre] = useState();
+
+    const fetchApi = async () => {
+        const getGenreMovie = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=vi-VN`);
+        const dataGenreMovie = await getGenreMovie.json();
+        console.log(dataGenreMovie);
+        setListGenre(dataGenreMovie.genres);
+        
+    }
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY >= 200) {
-                setColorHeader(true);
-            }else{
-                setColorHeader(false);
-            }            
-        };
-        window.addEventListener('scroll', handleScroll);
+        fetchApi();
+    },[]);
+    
+    useEffect(() => {
+        if(scrollHeader){
+            const handleScroll = () => {
+                if (window.scrollY >= 200) {
+                    setColorHeader(true);
+                }else{
+                    setColorHeader(false);
+                }            
+            };
+            window.addEventListener('scroll', handleScroll);
+        }else{
+            setColorHeader(true);
+        }
     }, []);
 
     return (
@@ -69,26 +86,26 @@ function Header() {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/detailmovie" className={clsx(style['navigation-link'])}>
+                            <Link to="/genremovie/Phim mới nhất" target='_blank' className={clsx(style['navigation-link'])}>
                                 Phim mới nhất
                             </Link>
                         </li>
                         <li>
-                            <Link to="/" className={clsx(style['navigation-link'])}>
-                                Phim bộ
+                            <Link to="/genremovie/Phim hành động" target='_blank' className={clsx(style['navigation-link'])}>
+                                Phim hành động
                             </Link>
                         </li>
                         <li>
-                            <Link to="/" className={clsx(style['navigation-link'])}>
-                                Phim lẻ
+                            <Link to="/genremovie/Phim kinh dị" target='_blank' className={clsx(style['navigation-link'])}>
+                                Phim kinh dị
                             </Link>
                         </li>
                         <li>
-                            <Menu typeMenu content={menuItem}>
-                                <Link to="/" className={clsx(style['navigation-link'])}>
+                            <Menu typeMenu content={listGenre}>
+                                <div className={clsx(style['navigation-link'])}>
                                     Thể loại
                                     <FontAwesomeIcon icon={faChevronDown} className={clsx(style['navigation-link-icon'])}/>
-                                </Link>
+                                </div>
                             </Menu>
                         </li>
                     </ul>

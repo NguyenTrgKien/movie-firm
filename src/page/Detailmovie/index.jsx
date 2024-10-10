@@ -2,77 +2,70 @@ import Header from '../../component/Header';
 import { useParams, Link } from 'react-router-dom';
 import clsx from 'clsx';
 import style from './Detailmovie.module.scss';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faCircleDown,
     faPlay,
     faShareFromSquare,
-    faStar,
-    faVolumeHigh,
-    faVolumeXmark,
+    faStar
 } from '@fortawesome/free-solid-svg-icons';
 import Button from '../../component/Button';
-import ReactPlayer from 'react-player';
 import Similar from './Similar';
+import { moviedetail } from '../../store/Action';
+import { useSelector, useDispatch } from 'react-redux';
 
 const apiKey = '122d1263283f2d9f0ac96a53bbf7e793';
 
 function Detailmovie() {
     const { id } = useParams();
     const [infoMovie, setInfoMovie] = useState([]);
-    const [cast, setCast] = useState([]);
     const [crew, setCrew] = useState([]);
-    const [trailer, setTrailer] = useState([]);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const videoTrailerRef = useRef();
     const [similar, setSimilar] = useState([]);
     const [activeNav, setActiveNav] = useState('Similar');
-    const [iconVolume, setIconVolume] = useState(faVolumeHigh);
-    const [volume, setVolume] = useState(1);
+
+    const dispatch = useDispatch();
+    const {dataDetailMovie, dataCastCrew, dataSimilar} = useSelector((state) => {
+        return state.movieDetail;
+    })
+    console.log(dataDetailMovie.vote_average);
+    
+    console.log(dataCastCrew);
+    
+
+    useEffect(() => {
+        dispatch(moviedetail(id));
+    },[dispatch])
+    
 
     const fetchApi = async () => {
-        const urlDetailMovie = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
-        const urlListCast = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`;
-        const urlTrailer = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}`;
-        const urlSimilar = `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}&language=en-US&page=1`;
+        const urlDetailMovie = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=vi-VN`; // Lấy chi tiết phim
+        const urlListCast = `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}`; // Lấy danh sách diễn viên
+        const urlSimilar = `https://api.themoviedb.org/3/movie/${id}/similar?api_key=${apiKey}&language=en-US&page=1&language=vi-VN`; // Lấy danh sách 
+        // những bộ phim liên quan
 
-        const [responseDetailMovie, responseCast, responseTrailer, responseSimilar] =
+        const [responseDetailMovie, responseCast, responseSimilar] =
             await Promise.all([
                 fetch(urlDetailMovie),
                 fetch(urlListCast),
-                fetch(urlTrailer),
                 fetch(urlSimilar),
             ]);
-        // https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=${apiKey}&language=en-US&page=1
 
         const dataDetailMovie = await responseDetailMovie.json();
         const dataCastCrew = await responseCast.json();
-        const dataTrailer = await responseTrailer.json();
         const dataSimilar = await responseSimilar.json();
         setInfoMovie([dataDetailMovie]);
-        setCast(dataCastCrew.cast);
         setCrew(dataCastCrew.crew);
         setSimilar(dataSimilar.results);
-        const handleTrailer = dataTrailer.results.find(
-            (item) => item.type === 'Trailer' && item.site === 'YouTube'
-        );
-        if (handleTrailer) {
-            setTrailer(handleTrailer);
-            setIsPlaying(true);
-        }
         console.log(dataDetailMovie);
-        
     };
-
-    
 
     useEffect(() => {
         fetchApi();
     }, []);
 
     const handleSortCast = (cast) => {
-        let listCastFamous = [...cast];
+        let listCastFamous = [...dataCastCrew.cast];
         for (let i = 0; i < listCastFamous.length; i++) {
             let maxIndex = i;
             for (let j = maxIndex + 1; j < listCastFamous.length; j++) {
@@ -89,27 +82,27 @@ function Detailmovie() {
 
     return (
         <div>
-            <Header />
+            <Header scrollHeader={true} />
             <div className={clsx(style['container'])}>
-                {infoMovie.map((movie, index) => (
-                    <div className={clsx(style['wrapper'])} key={index}>
+                {infoMovie.map((movie) => (
+                    <div className={clsx(style['wrapper'])}>
                         <section className={clsx(style['section-info-movie'])}>
                             <div className={clsx(style['info-content-movie'])}>
-                                <h2 className={clsx(style['title-movie'])}>{movie.title}</h2>
+                                <h2 className={clsx(style['title-movie'])}>{dataDetailMovie.title}</h2>
                                 <div className={clsx(style['release_date'])}>
                                     <div className={clsx(style['evaluate-movie'])}>
-                                        {movie.vote_average.toFixed(1)}{' '}
+                                        {dataDetailMovie.vote_average.toFixed(1)}{' '}
                                         <FontAwesomeIcon
                                             icon={faStar}
                                             className={clsx(style['evaluate-icon'])}
                                         />
                                     </div>
                                     <div className={clsx(style['evaluate-item'])}>
-                                        {movie.release_date}
+                                        {dataDetailMovie.release_date}
                                     </div>
                                 </div>
                                 <div className={clsx(style['genres-movie'])}>
-                                    {movie.genres.map((genre, index) => {
+                                    {dataDetailMovie.genres.map((genre, index) => {
                                         return (
                                             <span key={index} className={clsx(style['genre-name'])}>
                                                 {genre.name}
@@ -117,8 +110,7 @@ function Detailmovie() {
                                         );
                                     })}
                                     <div className={clsx(style['director'])}>
-                                        <span className={clsx(style['info-name'])}>Dirrector:</span>
-                                        {' '}
+                                        <span className={clsx(style['info-name'])}>Dirrector:</span>{' '}
                                         {
                                             crew.find((item) => {
                                                 return item.job === 'Director';
@@ -127,7 +119,7 @@ function Detailmovie() {
                                     </div>
                                     <div className={clsx(style['casts-movie'])}>
                                         <span className={clsx(style['info-name'])}>Cast:</span>{' '}
-                                        {handleSortCast(cast).map((value, index) => {
+                                        {handleSortCast(dataCastCrew.cast).map((value, index) => {
                                             return (
                                                 <a
                                                     href="#"
@@ -140,13 +132,13 @@ function Detailmovie() {
                                         })}
                                     </div>
                                     <div className={clsx(style['decription'])}>
-                                        <span className={clsx(style['info-name'])}>Decription:</span>{' '}
-                                        {infoMovie.map((value) => {
-                                            return value.overview;
-                                        })}
+                                        <span className={clsx(style['info-name'])}>
+                                            Decription:
+                                        </span>{' '}
+                                        {dataDetailMovie && dataDetailMovie.overview}
                                     </div>
                                     <div className={clsx(style['focus-info-btn'])}>
-                                        <Button btnMedium active>
+                                        <Button btnMedium active to={`/watchmovie/${id}`}>
                                             <FontAwesomeIcon icon={faPlay} />
                                             Play
                                         </Button>
@@ -163,49 +155,10 @@ function Detailmovie() {
                                 </div>
                             </div>
                             <div className={clsx(style['video-movie'])}>
-                                {trailer.key ? (
-                                    <>
-                                        <ReactPlayer
-                                            ref={videoTrailerRef}
-                                            className={clsx(style['video-movie-item'])}
-                                            url={`https://www.youtube.com/watch?v=${trailer.key}`}
-                                            controls={false} // Hiển thị các điều khiển
-                                            width="100%"
-                                            height="100%"
-                                            playing={isPlaying} // video playing khi vào trang 
-                                            volume={volume} // prop volume của react-player
-                                            onEnded={() => {
-                                                setIsPlaying(false);
-                                                setTimeout(() => {
-                                                    setIsPlaying(true);
-                                                }, 100);
-                                            }}
-                                        ></ReactPlayer>
-                                        <div className={clsx(style['volume-video'])}>
-                                            <div className={clsx(style['wrap-icon-volume'])}
-                                                onClick={() => {
-                                                    if(iconVolume === faVolumeHigh){
-                                                        setVolume(0)
-                                                        setIconVolume(faVolumeXmark);
-                                                    }else{
-                                                        setVolume(1);
-                                                        setIconVolume(faVolumeHigh);
-                                                    }
-                                                }}
-                                            >
-                                                <FontAwesomeIcon
-                                                    icon={iconVolume}
-                                                    className={clsx(style['volume-video-icon'])}
-                                                />
-                                            </div>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <img
-                                        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                                        alt="img"
-                                    />
-                                )}
+                                <img
+                                    src={`https://image.tmdb.org/t/p/w1280/${dataDetailMovie.backdrop_path}`}
+                                    alt="img"
+                                />
                             </div>
                         </section>
                         <section className={clsx(style['section-info-episode'])}>

@@ -1,0 +1,90 @@
+.wrapper-list-movie {
+    position: relative;
+    top: 6.5rem;
+    width: 100%;
+    height: auto;
+    padding: 5rem 15rem;
+    background-color: var(--default-background);
+    .list-movie-title {
+        font-size: 3rem;
+        color: var(--text-color);
+        margin-bottom: 2rem;
+    }
+    .content-list-movie {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        gap: 2rem;
+        &-item {
+            width: 100%;
+            height: 100%;
+            border-radius: 0.4rem;
+            .wrap-list-movie-image {
+                position: relative;
+                width: 100%;
+                height: 30rem;
+                overflow: hidden;
+                border-top-left-radius: 0.4rem;
+                border-top-right-radius: 0.4rem;
+                .image-movie {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    object-position: center;
+                    border-top-left-radius: 0.4rem;
+                    border-top-right-radius: 0.4rem;
+                    transition: all linear 0.25s;
+                }
+                .btn-play-movie {
+                    position: absolute;
+                    width: 5rem;
+                    height: 5rem;
+                    top: 50%;
+                    left: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: rgb(52, 255, 59);
+                    border-radius: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 100;
+                    opacity: 0;
+                    transition: all  linear .25s;
+                    .btn-play-movie-icon {
+                        font-size: 2rem;
+                        color: var(--text-color);
+                    }
+                }
+                &::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(157, 255, 159, 0.186);
+                    opacity: 0;
+                    transition: all linear 0.25s;
+                }
+                &:hover::after {
+                    opacity: 1;
+                }
+                &:hover .btn-play-movie{
+                    opacity: 1;
+                }
+            }
+            .name-movie {
+                font-size: 1.6rem;
+                color: var(--text-color);
+                padding-top: 1rem;
+                transition: all linear 0.25s;
+            }
+            &:hover .image-movie {
+                transform: scale(1.1);
+            }
+            &:hover .name-movie {
+                transform: scale(1.01);
+                color: rgb(44, 255, 44);
+            }
+        }
+    }
+}

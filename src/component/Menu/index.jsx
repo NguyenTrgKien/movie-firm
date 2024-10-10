@@ -12,7 +12,7 @@ function Menu({ children, typeMenu=false, menuLanguage=false, content=[], conten
         return (
             content.map((item, index) => {
                 return (
-                    <Link key={index} to={item.to} className={clsx(style['menu-item'])}>
+                    <Link key={index} target='_blank' to={`/genremovie/${item.name}`} className={clsx(style['menu-item'])}>
                         {item.name}
                     </Link>
                 )

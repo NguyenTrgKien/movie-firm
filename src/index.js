@@ -6,9 +6,10 @@ import reportWebVitals from './reportWebVitals';
 import Globalstyle from './component/Globalstyle';
 import { Provider } from 'react-redux';
 import RootReducer from './store/RooReducer';
-import {legacy_createStore as createStore } from 'redux';
+import { thunk } from 'redux-thunk'; // import redux thunk
+import { applyMiddleware, legacy_createStore as createStore } from 'redux';
 
-const store = createStore(RootReducer);
+const store = createStore(RootReducer, applyMiddleware(thunk));
 console.log(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

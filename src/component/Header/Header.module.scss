@@ -6,7 +6,7 @@
     background-color: var(--header-color);
     display: flex;
     align-items: center;
-    z-index: 100;
+    z-index: 999;
     .logo-nav {
         display: flex;
         align-items: center;
@@ -33,6 +33,7 @@
                     position: relative;
                     color: var(--text-color);
                     margin-right: 2rem;
+                    cursor: pointer;
                     &::after {
                         content: '';
                         position: absolute;

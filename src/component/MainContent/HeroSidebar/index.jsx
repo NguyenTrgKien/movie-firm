@@ -13,12 +13,11 @@ import Button from '../../../component/Button';
 import ListScroll from '../../ListScroll';
 import { useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { moviesPoppular } from '../../../store/Action';
 
-const apiKey = '122d1263283f2d9f0ac96a53bbf7e793';
 
 function HeroSidebar({ listMovieLove, likeMovie }) {
-    const [poppular, setPoppular] = useState([]);
-    const [newMovie, setNewMovie] = useState([]);
     const [indexMovie, setIndexMovie] = useState(0);
     const [likeHeart, setLikeHeart] = useState(false);
     const imageRef = useRef();
@@ -26,30 +25,18 @@ function HeroSidebar({ listMovieLove, likeMovie }) {
     const evaluateRef = useRef();
     const overviewRef = useRef();
     const [overviewText, setOverViewText] = useState('');
-
-    const fetchApi = async () => {
-        const urlPoppularMovie = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`; // url lấy list bộ phim đang thịnh hành
-        const urlNewMovie = `https://api.themoviedb.org/3/movie/now_playing?api_key=${apiKey}`;
-
-        const [getPoppularMovie, getNewMovie] = await Promise.all([
-            fetch(urlPoppularMovie),
-            fetch(urlNewMovie),
-        ]);
-
-        const dataPoppularMovie = await getPoppularMovie.json();
-        setPoppular((prev) => [...prev, ...dataPoppularMovie.results]);
-
-        const dataNewMovie = await getNewMovie.json();
-        setNewMovie(dataNewMovie.results);
-        console.log(dataPoppularMovie);
-    };
-
+    const dispatch = useDispatch();
+    
+    const {dataPoppularMovie, dataNewMovie} = useSelector((state) => {
+        return state.moviePoppular;
+    }) 
     useEffect(() => {
-        fetchApi();
-    }, []);
+        dispatch(moviesPoppular());
+    },[]); 
 
     const handleMoveMovie = (direc) => {
-        if (imageRef.current && titleRef.current && evaluateRef.current && overviewRef.current) { // khi click vào bộ phim tiếp theo thì hàm này sẽ thêm vào class
+        if (imageRef.current && titleRef.current && evaluateRef.current && overviewRef.current) {
+            // khi click vào bộ phim tiếp theo thì hàm này sẽ thêm vào class
             // và thực hiện các animation
             imageRef.current.classList.add(clsx(style['background-blur']));
             titleRef.current.classList.add(clsx(style['title-blur']));
@@ -65,28 +52,28 @@ function HeroSidebar({ listMovieLove, likeMovie }) {
             setIndexMovie((prev) =>
                 direc === 'left'
                     ? prev === 0
-                        ? newMovie.length - 1
+                        ? dataNewMovie.length - 1
                         : prev - 1
-                    : prev === newMovie.length - 1
+                    : prev === dataNewMovie.length - 1
                       ? 0
                       : prev + 1
             );
         }, 800);
     };
-    const currentMovie = newMovie[indexMovie];
+    const currentMovie = dataNewMovie[indexMovie];
 
     useEffect(() => {
         if (currentMovie) {
+            setOverViewText('');
             const words = currentMovie.overview.split(' '); // chuyển đổi chuỗi thành một mảng
             const timeouts = words.map((value, index) => {
                 setTimeout(() => {
-                    setOverViewText(prev => prev + (prev ? ' ' : '') + value); // cứ mỗi index*400 giây 
+                    setOverViewText((prev) => prev + (prev ? ' ' : '') + value); // cứ mỗi index*100 giây
                     //thì có một chữ được thêm vào
-                }, index * 100);    
+                }, index * 100);
             });
             return () => timeouts.forEach(clearTimeout);
         }
-
     }, [currentMovie]);
 
     return (
@@ -125,13 +112,13 @@ function HeroSidebar({ listMovieLove, likeMovie }) {
                                 {overviewText}
                             </div>
                             <div className={clsx(style['movie-btns'])}>
-                                <Button btnHero>
+                                <Button btnHero to={`/watchmovie/${currentMovie.id}`}>
                                     <FontAwesomeIcon icon={faPlay} />
                                     Play
                                 </Button>
                                 <div
                                     className={clsx(style['movie-btn-heart'], {
-                                        [style['btn-bgc']]: likeHeart,
+                                        [style['btn-bgc']]: listMovieLove.includes(currentMovie.id),
                                     })}
                                     onClick={() => {
                                         setLikeHeart(!likeHeart);
@@ -141,7 +128,9 @@ function HeroSidebar({ listMovieLove, likeMovie }) {
                                     <FontAwesomeIcon
                                         icon={faHeart}
                                         className={clsx(style['movie-btn-icon'], {
-                                            [style['icon-clicked']]: likeHeart
+                                            [style['icon-clicked']]: listMovieLove.includes(
+                                                currentMovie.id
+                                            ),
                                         })}
                                     />
                                 </div>
@@ -175,8 +164,9 @@ function HeroSidebar({ listMovieLove, likeMovie }) {
                 />
             </div>
 
-            <ListScroll title="Phổ biến trên PhimHay" dataApi={poppular} />
+            <ListScroll title="Phổ biến trên PhimHay" dataApi={dataPoppularMovie} />
         </section>
+        
     );
 }
 
