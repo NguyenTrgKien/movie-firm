@@ -6,25 +6,8 @@ import style from './Header.module.scss';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import Menu from '../../component/Menu';
-
-const menuItem = [
-    {
-        name: 'Phim lẻ',
-        to: '/',
-    },
-    {
-        name: 'Điện ảnh',
-        to: '/',
-    },
-    {
-        name: 'Võ thuật',
-        to: '/',
-    },
-    {
-        name: 'Cổ trang',
-        to: '/detailmovie',
-    },
-];
+import { nameGenre, movieNameCountry } from '../../store/Action';
+import { useSelector, useDispatch } from 'react-redux';
 
 const menuLanguage = [
     {
@@ -38,22 +21,36 @@ const menuLanguage = [
     },
 ];
 
-const apiKey = '122d1263283f2d9f0ac96a53bbf7e793';
 function Header({scrollHeader}) {
     const [colorHeader, setColorHeader] = useState(false);
     const [listGenre, setListGenre] = useState();
+    const dispatch = useDispatch();
+    const [country, setListCountry] = useState();
+    const dataNameGenre = useSelector((state) => {
+        return state.dataNameGenre;
+    })
+    const dataNameCountry = useSelector((state) => {
+        return state.dataNameCountry;
+    })
+    
+    useEffect(() => {
+        if(!dataNameCountry){
+            dispatch(movieNameCountry());
+        }else{
+            setListCountry(dataNameCountry);
+        }
+    }, [dispatch,dataNameCountry]);
 
-    const fetchApi = async () => {
-        const getGenreMovie = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=vi-VN`);
-        const dataGenreMovie = await getGenreMovie.json();
-        console.log(dataGenreMovie);
-        setListGenre(dataGenreMovie.genres);
-        
-    }
+    
+    
 
     useEffect(() => {
-        fetchApi();
-    },[]);
+        if (!dataNameGenre || dataNameGenre.genres.length === 0) {
+            dispatch(nameGenre()); // Chỉ gọi khi không có dữ liệu
+        } else {
+            setListGenre(dataNameGenre.genres); // Set dữ liệu khi đã có
+        }
+    }, [dispatch, dataNameGenre])
     
     useEffect(() => {
         if(scrollHeader){
@@ -96,16 +93,19 @@ function Header({scrollHeader}) {
                             </Link>
                         </li>
                         <li>
-                            <Link to="/genremovie/Phim kinh dị" target='_blank' className={clsx(style['navigation-link'])}>
-                                Phim kinh dị
-                            </Link>
-                        </li>
-                        <li>
                             <Menu typeMenu content={listGenre}>
                                 <div className={clsx(style['navigation-link'])}>
                                     Thể loại
                                     <FontAwesomeIcon icon={faChevronDown} className={clsx(style['navigation-link-icon'])}/>
                                 </div>
+                            </Menu>
+                        </li>
+                        <li>
+                            <Menu typeMenu contentCountry = {country}>
+                                <div className={clsx(style['navigation-link'])}>
+                                    Quốc gia
+                                    <FontAwesomeIcon icon={faChevronDown} className={clsx(style['navigation-link-icon'])}/>
+                                </div>  
                             </Menu>
                         </li>
                     </ul>

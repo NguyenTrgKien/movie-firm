@@ -3,6 +3,7 @@
     height: auto;
     padding: 0 0 0 6rem;
     background-color: var(--default-background);
+    padding-bottom: 10rem;
     .section-info-movie {
         position: relative;
         width: 100%;
@@ -194,12 +195,12 @@
                 }
             }
         }
-        .content-episode{
+        .content-episode {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-            grid-template-rows: repeat(5, 30rem); 
+            grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); /* Số cột tự động tùy kích thước */
+            grid-auto-rows: 30rem; /* Đặt chiều cao mỗi hàng là 30rem */
             column-gap: 2.5rem;
-            row-gap: 6rem;
+            row-gap: 6rem;  
         }
     }
 }

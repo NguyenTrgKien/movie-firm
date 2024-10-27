@@ -16,7 +16,6 @@ import { connect } from 'react-redux';
 import { useSelector, useDispatch } from 'react-redux';
 import { moviesPoppular } from '../../../store/Action';
 
-
 function HeroSidebar({ listMovieLove, likeMovie }) {
     const [indexMovie, setIndexMovie] = useState(0);
     const [likeHeart, setLikeHeart] = useState(false);
@@ -26,14 +25,18 @@ function HeroSidebar({ listMovieLove, likeMovie }) {
     const overviewRef = useRef();
     const [overviewText, setOverViewText] = useState('');
     const dispatch = useDispatch();
-    
-    const {dataPoppularMovie, dataNewMovie} = useSelector((state) => {
-        return state.moviePoppular;
-    }) 
-    useEffect(() => {
-        dispatch(moviesPoppular());
-    },[]); 
+    const country = useSelector((state) => {
+        return state.listCountry;
+    });
 
+    useEffect(() => {
+        console.log('Fetching movies for country:', country.name);
+        dispatch(moviesPoppular(country.name));
+    }, [dispatch,country.name]);
+
+    const { dataPoppularMovie, dataNewMovie } = useSelector((state) => {
+        return state.moviePoppular;
+    });
     const handleMoveMovie = (direc) => {
         if (imageRef.current && titleRef.current && evaluateRef.current && overviewRef.current) {
             // khi click vào bộ phim tiếp theo thì hàm này sẽ thêm vào class
@@ -164,9 +167,8 @@ function HeroSidebar({ listMovieLove, likeMovie }) {
                 />
             </div>
 
-            <ListScroll title="Phổ biến trên PhimHay" dataApi={dataPoppularMovie} />
+            <ListScroll title="Phổ biến trên PhimHay" heroPosition dataApi={dataPoppularMovie} />
         </section>
-        
     );
 }
 

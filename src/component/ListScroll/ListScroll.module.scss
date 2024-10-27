@@ -7,10 +7,7 @@
 }
 
 .list-scroll{
-    position: absolute;
-    width: 10%;
-    top: 75%;
-    left: 0;
+    
     padding: 0 6rem;
     width: 100%;
     z-index: 100;
@@ -182,5 +179,11 @@
 
 }
 
+.list-scroll.heroPosition{
+    position: absolute;
+    width: 100%;
+    top: 75%;
+    left: 0;
+}
 
 

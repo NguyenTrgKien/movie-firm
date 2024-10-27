@@ -4,11 +4,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
 import Button from '../Button';
 import {Link} from 'react-router-dom';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 
-function ListScroll({ dataApi = [], title = '' }) {
+function ListScroll({ dataApi = false, title = '', heroPosition = false}) {
+    const [dataPopular, setDataPopular] = useState();
     const listScrollRef = useRef();
+    const containerRef = useRef();
+    useEffect(() => {
+        setDataPopular(dataApi);
+    },[dataApi]);
+    if(heroPosition){
+        if(containerRef.current){
+            containerRef.current.classList.add(clsx(style['heroPosition']));
+        }
+    }
     
     const handleMoveMovieLeft = () => {
         if(listScrollRef.current){
@@ -29,7 +39,9 @@ function ListScroll({ dataApi = [], title = '' }) {
     }
 
     return (
-        <div className={clsx(style['list-scroll'])}>
+        <div className={clsx(style['list-scroll'])}
+            ref={containerRef}
+        >
             <div className={clsx(style['wrap-icon-left'])} 
                 onClick={() => handleMoveMovieLeft()}
             >
@@ -43,7 +55,7 @@ function ListScroll({ dataApi = [], title = '' }) {
             <div className={clsx(style['list-scroll-firm'])}
                 ref={listScrollRef}
             >
-                {dataApi.map((value, index) => {
+                {dataPopular && dataPopular.map((value, index) => {
                     const poster = value.poster_path;
 
                     return (
