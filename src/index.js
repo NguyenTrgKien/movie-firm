@@ -10,7 +10,6 @@ import { thunk } from 'redux-thunk'; // import redux thunk
 import { applyMiddleware, legacy_createStore as createStore } from 'redux';
 
 const store = createStore(RootReducer, applyMiddleware(thunk));
-console.log(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -26,7 +26,6 @@ function GenreMovie() {
     const country = useSelector((state) => {
         return state.listCountry;
     })
-    console.log(country);
     
     useEffect(() => {
         if(!dataNameGenre){
