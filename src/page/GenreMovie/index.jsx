@@ -38,7 +38,7 @@ function GenreMovie() {
                 value.name.toLowerCase().includes(genre.toLowerCase())
             );
             if(genre_id){
-                setTitle(genre_id.name);
+                setTitle(genre_id.name);                
                 dispatch(listGenre(genre_id.id));
             }
         }
